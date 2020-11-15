@@ -1,0 +1,9 @@
+server:
+  port: 8110
+management:
+  server:
+    port: 8111
+  endpoints:
+    web:
+      exposure:
+        include: '*'
