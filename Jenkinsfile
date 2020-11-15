@@ -23,11 +23,11 @@ node {
 //             sh "kubectl ./CI-CD/deploy/Jenkins_deploy_playbook.yml  --extra-vars ECRLink=${ECRLink}  --extra-vars ImageName=${ImageName} --extra-vars imageTag=${ImageTag} --extra-vars Namespace=${Namespace}"
 //         }
 //     }
-    stage ('Build'){
-        steps {
-            sh '''mvn clean package'''
-        }
-    }
+//     stage ('Build'){
+//         steps {
+//             sh '''mvn clean package'''
+//         }
+//     }
 //     stage ('Docker Build and Push'){
 //           steps {
 //             sh '''cp Dockerfile ${HYBRIS_TEMP_DIR}/hybrisServer/
