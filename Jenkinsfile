@@ -24,15 +24,6 @@ pipeline {
       }
     }
 
-//     stage('Docker Build and Push'){
-//         sh 'mv target/app.jar src/main/docker/
-//             ImageTag = "`date +%Y%m%d`"-${ImageTag//\//-}
-//             ImageTag = "latest"
-//             image=${ECRLink}/${ImageName}-${ImageTag}
-//             docker login ${ECRLink} -u ${UserName} -p ${Password}
-//             docker build src/main/docker -t $image
-//             docker push $image'
-//     }
 
     stage('k8s deploy') {
           agent {
