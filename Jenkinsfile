@@ -28,7 +28,7 @@ node {
             sh '''mvn clean package'''
         }
     }
-    stage ('Docker Build and Push'){
+//     stage ('Docker Build and Push'){
 //           steps {
 //             sh '''cp Dockerfile ${HYBRIS_TEMP_DIR}/hybrisServer/
 //             cd ${HYBRIS_TEMP_DIR}/hybrisServer/
@@ -36,5 +36,5 @@ node {
 //             sudo docker login docker-registry.moco.com -u ${ACCESS} -p ${PASSWORD}
 //             sudo docker push docker-registry.moco.com/dev/epo_oms_hybris6700'''
 //             }
-    }
+//     }
 }
