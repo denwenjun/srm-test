@@ -1,9 +1,14 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'open-registry.going-link.com/zhenyun/cibase:0.7.0'
+    }
+
+  }
   stages {
     stage('checkout') {
       steps {
-        sh 'pwd'
+        sh 'mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true'
       }
     }
 
