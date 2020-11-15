@@ -6,10 +6,6 @@ pipeline {
 
   }
   stages {
-    stage ('checkout'){
-        final scmVars = checkout(scm)
-        ImageTag = "${checkout(scm).GIT_COMMIT}"
-    }
 
     stage('build') {
       steps {
