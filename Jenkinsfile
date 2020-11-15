@@ -16,9 +16,5 @@ pipeline {
         sh 'mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true'
       }
     }
-
-
-
-
   }
 }
