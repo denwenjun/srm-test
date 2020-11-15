@@ -1,40 +1,44 @@
-node {
-    def Namespace = "default"
-    def ImageName = "stg01-a-tky-ecr-gsp-fr-register"
-    def ECRLink = "https://575516539389.dkr.ecr.ap-southeast-2.amazonaws.com"
+env.IMAGE_NAME = 'srm-test'
+env.IMAGE_TAG = '0.0.1'
+env.REPOSITORIES_ADDRESS = 'https://029937289256.dkr.ecr.ap-northeast-1.amazonaws.com/'
+env.REGISTER_ACCOUNT = "srm-aws-account"
+pipeline {
+  agent {
+    docker {
+      image 'open-registry.going-link.com/zhenyun/cibase:0.7.0'
+    }
+  }
 
-    stage ('Checkout'){
-        final scmVars = checkout(scm)
-        ImageTag = "${checkout(scm).GIT_COMMIT}"
+  stages {
+    stage('build') {
+      steps {
+        sh 'mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true'
+      }
     }
 
-//     stage('Docker Build and Push'){
-//         dir("${env.WORKSPACE}"){
-//             docker.build("${ImageName}:latest")
-//         }
-//
-//         docker.withRegistry("${ECRLink}", 'ecr:ap-southeast-2:helloworld-ecr'){
-//             docker.image("${ImageName}").push("${ImageTag}")
-//         }
-//      }
-//
-//     stage('Deploy helloworld on K8s'){
-//         dir("${env.WORKSPACE}"){
-//             sh "kubectl ./CI-CD/deploy/Jenkins_deploy_playbook.yml  --extra-vars ECRLink=${ECRLink}  --extra-vars ImageName=${ImageName} --extra-vars imageTag=${ImageTag} --extra-vars Namespace=${Namespace}"
-//         }
-//     }
-//     stage ('Build'){
-//         steps {
-//             sh '''mvn clean package'''
-//         }
-//     }
-//     stage ('Docker Build and Push'){
-//           steps {
-//             sh '''cp Dockerfile ${HYBRIS_TEMP_DIR}/hybrisServer/
-//             cd ${HYBRIS_TEMP_DIR}/hybrisServer/
-//             sudo docker build -t docker-registry.moco.com/dev/epo_oms_hybris6700 .
-//             sudo docker login docker-registry.moco.com -u ${ACCESS} -p ${PASSWORD}
-//             sudo docker push docker-registry.moco.com/dev/epo_oms_hybris6700'''
-//             }
-//     }
+    stage('docker build') {
+      docker.withRegistry('https://029937289256.dkr.ecr.ap-northeast-1.amazonaws.com/', 'ecr:ap-northeast-1:${env.REGISTER_ACCOUNT}') {
+          def customImage = docker.build("${env.IMAGE_NAME}:${env.IMAGE_TAG}")
+          customImage.push()
+      }
+    }
+
+    stage("Deploy in AWS"){
+      agent {
+          docker {
+              image 'lwolf/helm-kubectl-docker'
+          }
+      }
+      steps{
+        withCredentials([
+            file(credentialsId: 'sit_kubeconfig', variable: 'KUBECONFIG')
+         ]){sh """
+                kubectl -n stg-srm delete -f ./deploy --ignore-not-found=true
+                kubectl -n stg-srm apply -f ./deploy
+                kubectl -n stg-srm get pod -o wide
+                """
+           }
+      }
+    }
+  }
 }
