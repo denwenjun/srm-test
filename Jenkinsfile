@@ -1,11 +1,4 @@
 pipeline {
-  def Namespace = "default"
-  def ImageName = "srm-test"
-  def ECRLink = "https://029937289256.dkr.ecr.ap-northeast-1.amazonaws.com"
-  def UserName = ""
-  def Password = ""
-  def K8sConfig = ""
-  def ImageTag = "latest"
   agent {
     docker {
       image 'open-registry.going-link.com/zhenyun/cibase:0.7.0'
