@@ -1,11 +1,12 @@
 pipeline {
-  agent none
+  agent { label 'dockerserver' }
   stages {
     stage('build') {
       agent {
         docker {
+          label 'dockerserver'
           image 'maven:3-jdk-8-alpine'
-          args '--name docker-node'
+          args '-v /root/.m2:/root/.m2'
         }
       }
       steps {

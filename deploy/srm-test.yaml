@@ -21,7 +21,7 @@ spec:
       - name: docker-secret
       containers:
         - name: srm-test
-          image: "029937289256.dkr.ecr.ap-northeast-1.amazonaws.com/arm:0.0.1"
+          image: "029937289256.dkr.ecr.ap-northeast-1.amazonaws.com/srm-test:0.0.1"
           imagePullPolicy: Always
           env:
           - name: "EUREKA_INSTANCE_PREFER_IP_ADDRESS"
