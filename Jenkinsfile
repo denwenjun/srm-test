@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('build jar') {
       steps {
-        sh 'echo $PATH'
+        sh 'ls'
       }
     }
 
