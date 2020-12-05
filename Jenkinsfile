@@ -1,14 +1,9 @@
 pipeline {
-  agent {
-    node {
-      label 'dockerserver'
-    }
-
-  }
+  agent any
   stages {
     stage('build') {
       steps {
-        sh 'docker info'
+        sh 'ls'
       }
     }
 
