@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('build jar') {
       steps {
-        sh 'mvn -v'
+        sh 'echo $PATH'
       }
     }
 
