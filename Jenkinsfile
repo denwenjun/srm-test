@@ -3,19 +3,19 @@ pipeline {
   stages {
     stage('build jar') {
       steps {
-        sh 'ls'
+        sh 'java -version'
       }
     }
 
     stage('build images') {
       steps {
-        sh 'docker info'
+        sh 'mvn -v'
       }
     }
 
     stage('push images') {
       steps {
-        sh 'ls'
+        sh 'docker info'
       }
     }
 
