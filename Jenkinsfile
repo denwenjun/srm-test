@@ -14,13 +14,13 @@ cp target/app.jar src/main/docker/app.jar
 
     stage('build images') {
       steps {
-        sh 'docker build --pull -t gsp-sit/stg01-tky-ecr-gsp-admin-gsp-fr:sit ${1:-"src/main/docker"}'
+        sh 'docker build --pull -t 029937289256.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-admin-gsp-fr:sit ${1:-"src/main/docker"}'
       }
     }
 
     stage('push images') {
       steps {
-        sh 'docker push gsp-sit/stg01-tky-ecr-gsp-admin-gsp-fr:sit'
+        sh 'docker push 029937289256.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-admin-gsp-fr:sit'
       }
     }
 
