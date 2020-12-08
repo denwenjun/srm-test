@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+export AGENT_HOME="${AGENT_HOME}"
+export AGENT_ENV="${AGENT_ENV}"
+
+
+if [ ! -z $AGENT_HOME ]
+then
+    if [ -f $AGENT_HOME/skywalking-agent.jar ]
+    then
+        JAVA_OPTS="${JAVA_OPTS} -javaagent:$AGENT_HOME/skywalking-agent.jar -Dskywalking.agent.service_name=${JAR%%.jar}-$AGENT_ENV"
+    fi
+    if [ -f /glowroot/glowroot.jar ]
+    then
+        JAVA_OPTS=${JAVA_OPTS}" -javaagent:/glowroot/glowroot.jar -Dglowroot.agent.rollup.id=DEV -Dglowroot.agent.id=${JAR%%.jar}"
+    fi
+fi
+

@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: srm-test-cm
-data:
-  EUREKA_INSTANCE_PREFER_IP_ADDRESS: "${EUREKA_INSTANCE_PREFER_IP_ADDRESS}"
