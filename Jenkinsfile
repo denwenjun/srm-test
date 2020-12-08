@@ -9,7 +9,7 @@ pipeline {
 
     stage('build images') {
       steps {
-        sh 'mvn -v'
+        sh 'docker info'
       }
     }
 
