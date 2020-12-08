@@ -1,15 +1,10 @@
-# maven ignore
+HELP.md
 target/
-*.versionsBackup
-.factorypath
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# eclipse ignore
-.settings/
-.project
-.classpath
-*rebel.xml
-
-# STS 
+### STS ###
 .apt_generated
 .classpath
 .factorypath
@@ -18,34 +13,21 @@ target/
 .springBeans
 .sts4-cache
 
-# idea ignore
-.idea/
-*.ipr
-*.iml
+### IntelliJ IDEA ###
+.idea
 *.iws
+*.iml
+*.ipr
 
-# temp ignore
-*.log
-*.cache
-*.diff
-*.patch
-*.tmp
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# system ignore
-.DS_Store
-Thumbs.db
-
-.vscode
-
-# dev properties
-src/main/resources/application-dev.yml
-src/main/resources/application-remote.yml
-
-init-local-database-dev.sh
+### VS Code ###
+.vscode/
