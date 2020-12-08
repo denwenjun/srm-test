@@ -31,7 +31,7 @@ target/
 *.patch
 *.tmp
 
-
+*.jar
 *.war
 *.ear
 *.zip
