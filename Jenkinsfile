@@ -46,7 +46,7 @@ docker push ${DOCKER_IMAGE}:$version'''
       steps {
         sh '''version=`tail -n 1 version`
 docker rmi ${DOCKER_IMAGE}:$version
-${VERSION}=$version'''
+VERSION=$version'''
       }
     }
 
