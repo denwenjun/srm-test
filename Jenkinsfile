@@ -11,7 +11,7 @@ pipeline {
       }
       steps {
         sh '''mkdir -p /root/.kube
-echo ${KUBE_CONFIG} > /root/.kube/config
+cp config /root/.kube/config
 cat /root/.kube/config
 kubectl get node
 mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
