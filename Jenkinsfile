@@ -11,7 +11,7 @@ pipeline {
       }
       steps {
         sh '''mkdir -p /root/.kube
-echo ${KUBE_CONFIG} | base64 -d > /root/.kube/config
+echo ${KUBE_CONFIG} > /root/.kube/config
 kubectl get node
 mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
 cp target/app.jar src/main/docker/app.jar
