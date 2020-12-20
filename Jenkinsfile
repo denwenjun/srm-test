@@ -15,6 +15,7 @@ cp target/app.jar src/main/docker/app.jar
     stage('build images') {
       steps {
         sh '''current=`date "+%Y%m%d%H%M%S"`
+mkdir -p /tmp/version
 cat >> /tmp/version/${PROJECT}-version <<EOF
 sit-$current
 EOF
