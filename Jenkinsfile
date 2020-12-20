@@ -2,22 +2,24 @@ pipeline {
   agent any
   stages {
     stage('build jar') {
-      agent {
-        docker {
-          image 'lwolf/helm-kubectl-docker'
-          args '-u root:root'
-        }
-
-      }
-      steps {
-        sh '''mkdir -p /root/.kube
-kubectl get node
-mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
+      parallel {
+        stage('build jar') {
+          steps {
+            sh '''mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
 cp target/app.jar src/main/docker/app.jar
 
 
 
 '''
+          }
+        }
+
+        stage('k8s') {
+          steps {
+            sh 'kubectl get node'
+          }
+        }
+
       }
     }
 
