@@ -15,8 +15,8 @@ cp target/app.jar src/main/docker/app.jar
     stage('build images') {
       steps {
         sh '''current=`date "+%Y%m%d%H%M%S"`
-cat >> ~/.bash_profile <<EOF
-export version=sit-$current
+cat >> ./version <<EOF
+sit-$current
 EOF
 version=sit-$current
 docker build --pull -t 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-register-gsp-fr:$version ${1:-"src/main/docker"}'''
@@ -26,7 +26,7 @@ docker build --pull -t 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit
     stage('push images') {
       steps {
         sh '''docker login --username AWS --password ${ECR_PASSWORD} 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com
-source ~/.bash_profile
+version=\'tail -n 1 version\'
 docker push 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-register-gsp-fr:$version'''
       }
     }
