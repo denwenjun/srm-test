@@ -16,7 +16,7 @@ cp target/app.jar src/main/docker/app.jar
 
         stage('k8s') {
           steps {
-            sh 'kubectl get node'
+            podTemplate(label: 'aws', serviceAccount: 'jenkins')
           }
         }
 
