@@ -15,7 +15,7 @@ cp target/app.jar src/main/docker/app.jar
     stage('build images') {
       steps {
         sh '''current=`date "+%Y%m%d%H%M%S"`
-cat >> ./version <<EOF
+cat >> /tmp/version/${PROJECT}-version <<EOF
 sit-$current
 EOF
 version=sit-$current
@@ -28,7 +28,7 @@ docker build --pull -t ${DOCKER_IMAGE}:$version ${1:-"src/main/docker"}'''
         stage('push images') {
           steps {
             sh '''docker login --username AWS --password ${ECR_PASSWORD} ${ECR_REGISTORY}
-version=`tail -n 1 version`
+version=`tail -n 1 /tmp/version/${PROJECT}-version`
 docker push ${DOCKER_IMAGE}:$version'''
           }
         }
@@ -44,9 +44,8 @@ docker push ${DOCKER_IMAGE}:$version'''
 
     stage('clean images') {
       steps {
-        sh '''version=`tail -n 1 version`
-docker rmi ${DOCKER_IMAGE}:$version
-VERSION=$version'''
+        sh '''version=`tail -n 1 /tmp/version/${PROJECT}-version`
+docker rmi ${DOCKER_IMAGE}:$version'''
       }
     }
 
@@ -56,6 +55,6 @@ VERSION=$version'''
     DOCKER_IMAGE = '607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-register-gsp-fr'
     ECR_REGISTORY = '607422664064.dkr.ecr.ap-northeast-1.amazonaws.com'
     KUBE_CONFIG = 'apiVersion: v1 clusters: - cluster:     certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01URXlOakF6TlRVek9Wb1hEVE13TVRFeU5EQXpOVFV6T1Zvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBS0x0ClFoNWlpMDk0dStMa0xzVFV5VG1ZMDBXMkJJRHdmaHNPV0NjUXEybk5wVkdSeXpLYjRJVkRHNmZwSXl4OEJaVlcKQlg1MGx3OTBSbGw0MFhWVHZ1NjJlc083WGZ4T1B5WnlxbjYxUTIzRlF5MVE0eEorcXlMK3hLZkZSbEI4RFRSaQpncHAvVXRLN0ROMlcwL09OLzV0ODdpMFFPWktTUFdPRW92QnpxbWJPTE8xdGh0a1lKOVpvd0lBRjZ2Q1ExNVJ2CjQ2enh6Y09oM2g4cmk3RzNUUEJsSXZTK3NFOElTbEhyN0NsSWdlUERSQ3dIYWJCNW9GQ0pQR3FVTEFJbmxrV2MKNFU5NHpWMk1FM1Byc1pCdDNnT0R2Z1VhZ3hhdlI2c1NGa2xTLytaa2Z4RWdSM1kxeU45SGxqNFhocHpVTFRScApsTEZvN0JqdGkyaCt5TkNQMkcwQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFBMDNKY3FWdW5oZmcxdE51Rk13K3Z3ak5QMXAKbkpqWjVldGMzRlVtT3RocC9HamRnYU5jVU90M3NndHdmeCtUYmM5MkcwZFI1MmVZYUY1SlVtNGZDTmU5NU1QLwpXWkhHQkZiTVlSenlHWVFZT3pXMXBzTWFFY09kU2tGOVp3QWRzVndlUVhBWWFYVy9Cd01SV01od0RZOVZ3eFRmCkRxZ25oOGlCTFFQM2FrLzVIK0RUUDJMY3lWQjVJYk4zU0ZKOFZtQzMzblFqeWRhV1JSdWxBeGJPaXlWNDUvWkYKTTgxUENhRzZ5UXBmcVdqbWdLeTR1UDRhajNwdGVqWXdLM1dRMEpvMWx1bllLK1h3OHJqQkRvNE5xVm0ySlQ3egpVazRrZnhic0dNSHFyekl5MGp4QkkzZ0RqampoSjA5aDVSc0FvaklYd2t3WHRHTnpVUnR4enVmSjVKWT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=     server: https://3C56FF73F2CEFDDC1E5751C9CFE00610.gr7.ap-northeast-1.eks.amazonaws.com   name: stg01-tky-eks-gsp-fr.ap-northeast-1.eksctl.io contexts: - context:     cluster: stg01-tky-eks-gsp-fr.ap-northeast-1.eksctl.io     user: i-07362b90868d169a5@stg01-tky-eks-gsp-fr.ap-northeast-1.eksctl.io   name: i-07362b90868d169a5@stg01-tky-eks-gsp-fr.ap-northeast-1.eksctl.io current-context: i-07362b90868d169a5@stg01-tky-eks-gsp-fr.ap-northeast-1.eksctl.io kind: Config preferences: {} users: - name: i-07362b90868d169a5@stg01-tky-eks-gsp-fr.ap-northeast-1.eksctl.io   user:     exec:       apiVersion: client.authentication.k8s.io/v1alpha1       args:       - eks       - get-token       - --cluster-name       - stg01-tky-eks-gsp-fr       - --region       - ap-northeast-1       command: aws       env:       - name: AWS_STS_REGIONAL_ENDPOINTS         value: regional'
-    VERSION = '1'
+    PROJECT = 'srm-register'
   }
 }
