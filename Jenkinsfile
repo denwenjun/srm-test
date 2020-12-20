@@ -21,16 +21,6 @@ cp target/app.jar src/main/docker/app.jar
         //node = the pod label
         node('aws'){
             //container = the container label
-            stage('Build'){
-                container('golang'){
-                    // This is where we build our code.
-                }
-            }
-            stage('Build Docker Image'){
-                container(‘docker’){
-                    // This is where we build the Docker image
-                }
-            }
         }
     })
           }
