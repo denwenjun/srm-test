@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('build jar') {
       steps {
-        sh '''mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
+        sh '''kubectl get node
+mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
 cp target/app.jar src/main/docker/app.jar
 
 
