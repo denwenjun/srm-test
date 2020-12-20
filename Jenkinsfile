@@ -2,27 +2,13 @@ pipeline {
   agent any
   stages {
     stage('build jar') {
-      parallel {
-        stage('build jar') {
-          steps {
-            sh '''mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
+      steps {
+        sh '''mvn clean package -U -DskipTests=true -Dmaven.javadoc.skip=true
 cp target/app.jar src/main/docker/app.jar
 
 
 
 '''
-          }
-        }
-
-        stage('k8s') {
-          steps {
-            podTemplate(label: 'aws', serviceAccount: 'jenkins') {
-              sh 'kubectl get node'
-            }
-
-          }
-        }
-
       }
     }
 
