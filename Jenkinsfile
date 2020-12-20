@@ -16,7 +16,7 @@ cp target/app.jar src/main/docker/app.jar
       steps {
         sh '''current=`date "+%Y%m%d%H%M%S"`
 mkdir -p /var/jenkins_home
-cat >> /var/jenkins_home/${PROJECT}-version <<EOF
+cat >> /var/jenkins_home/version/${PROJECT}-version <<EOF
 sit-$current
 EOF
 version=sit-$current
@@ -29,7 +29,7 @@ docker build --pull -t ${DOCKER_IMAGE}:$version ${1:-"src/main/docker"}'''
         stage('push images') {
           steps {
             sh '''docker login --username AWS --password ${ECR_PASSWORD} ${ECR_REGISTORY}
-version=`tail -n 1 /var/jenkins_home/${PROJECT}-version`
+version=`tail -n 1 /var/jenkins_home/version/${PROJECT}-version`
 docker push ${DOCKER_IMAGE}:$version'''
           }
         }
@@ -45,7 +45,7 @@ docker push ${DOCKER_IMAGE}:$version'''
 
     stage('clean images') {
       steps {
-        sh '''version=`tail -n 1 /var/jenkins_home/${PROJECT}-version`
+        sh '''version=`tail -n 1 /var/jenkins_home/version/${PROJECT}-version`
 docker rmi ${DOCKER_IMAGE}:$version'''
       }
     }
