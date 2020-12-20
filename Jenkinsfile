@@ -24,16 +24,28 @@ docker build --pull -t 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit
     }
 
     stage('push images') {
-      steps {
-        sh '''docker login --username AWS --password ${ECR_PASSWORD} 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com
+      parallel {
+        stage('push images') {
+          steps {
+            sh '''docker login --username AWS --password ${ECR_PASSWORD} 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com
 version=`tail -n 1 version`
 docker push 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-register-gsp-fr:$version'''
+          }
+        }
+
+        stage('clean jar') {
+          steps {
+            sh 'rm -rf src/main/docker/app.jar'
+          }
+        }
+
       }
     }
 
-    stage('deploy') {
+    stage('clean images') {
       steps {
-        sh 'kubectl get node'
+        sh '''version=`tail -n 1 version`
+docker rmi 607422664064.dkr.ecr.ap-northeast-1.amazonaws.com/gsp-sit/stg01-tky-ecr-gsp-register-gsp-fr:$version'''
       }
     }
 
