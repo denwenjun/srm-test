@@ -16,13 +16,10 @@ cp target/app.jar src/main/docker/app.jar
 
         stage('k8s') {
           steps {
-            podTemplate(label: 'aws', serviceAccount: 'jenkins',
-                        {
-        //node = the pod label
-        node('aws'){
-            //container = the container label
-        }
-    })
+            podTemplate(label: 'aws', serviceAccount: 'jenkins') {
+              node(label: 'testlabes')
+            }
+
           }
         }
 
